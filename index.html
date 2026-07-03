@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Menu de Acesso</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
             --bg-color: #0f0f23;
@@ -34,7 +33,7 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            font-family: 'Inter', sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -47,7 +46,6 @@
             overflow: hidden;
         }
 
-        /* Partículas de fundo animadas */
         body::before {
             content: '';
             position: absolute;
@@ -102,7 +100,6 @@
             box-shadow: 0 4px 12px rgba(220, 53, 69, 0.4);
         }
 
-        /* Toggle Switch Premium */
         .switch {
             position: relative;
             display: inline-block;
@@ -125,7 +122,7 @@
 
         .slider::before {
             position: absolute;
-            content: "☀️";
+            content: "";
             display: flex;
             align-items: center;
             justify-content: center;
@@ -141,12 +138,8 @@
         }
 
         input:checked + .slider { background: rgba(139, 92, 246, 0.5); }
-        input:checked + .slider::before {
-            transform: translateX(26px);
-            content: "🌙";
-        }
+        input:checked + .slider::before { transform: translateX(26px); }
 
-        /* Container de Login */
         .login-box {
             background: var(--container-bg);
             padding: 48px;
@@ -194,7 +187,7 @@
             background: var(--input-bg);
             color: var(--text-color);
             font-size: 15px;
-            font-family: 'Inter', sans-serif;
+            font-family: inherit;
             transition: all 0.3s ease;
             outline: none;
         }
@@ -218,7 +211,7 @@
             gap: 8px;
         }
 
-        .password-wrapper .input-group { flex: 1; }
+        .password-wrapper .input-group { flex: 1; margin-bottom: 0; }
 
         .btn-toggle-pass {
             width: 50px;
@@ -249,7 +242,7 @@
             border-radius: 12px;
             font-size: 16px;
             font-weight: 600;
-            font-family: 'Inter', sans-serif;
+            font-family: inherit;
             transition: all 0.3s ease;
             margin-top: 8px;
             position: relative;
@@ -280,12 +273,13 @@
             margin-top: 16px;
             text-align: center;
             font-weight: 500;
-            display: flex;
+            display: none;
             align-items: center;
             justify-content: center;
             gap: 6px;
-            animation: shake 0.5s ease-in-out;
         }
+
+        .shake { animation: shake 0.5s ease-in-out; }
 
         @keyframes shake {
             0%, 100% { transform: translateX(0); }
@@ -293,7 +287,6 @@
             75% { transform: translateX(5px); }
         }
 
-        /* Menu de Botões */
         #menu-botoes {
             display: none;
             flex-direction: column;
@@ -317,7 +310,7 @@
             cursor: pointer;
             border-radius: 16px;
             font-size: 16px;
-            font-family: 'Inter', sans-serif;
+            font-family: inherit;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
             overflow: hidden;
@@ -351,9 +344,7 @@
             filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
         }
 
-        .btn-menu .label {
-            flex: 1;
-        }
+        .btn-menu .label { flex: 1; }
 
         .btn-menu .arrow {
             opacity: 0;
@@ -367,14 +358,17 @@
             transform: translateX(0);
         }
 
-        /* Cores específicas dos botões com gradientes */
         .btn-red { background: linear-gradient(135deg, #ff416c, #ff4b2b); }
         .btn-yellow { background: linear-gradient(135deg, #f6d365, #fda085); color: #1a1a2e; }
         .btn-pink { background: linear-gradient(135deg, #ff6b9d, #c44569); }
         .btn-blue { background: linear-gradient(135deg, #4facfe, #00f2fe); }
         .btn-purple { background: linear-gradient(135deg, #a18cd1, #fbc2eb); }
 
-        /* Responsivo */
+        @keyframes fadeOut {
+            from { opacity: 1; transform: translateY(0); }
+            to { opacity: 0; transform: translateY(-20px); }
+        }
+
         @media (max-width: 480px) {
             .login-box { padding: 32px 24px; }
             .top-bar { padding: 16px 20px; }
@@ -386,7 +380,7 @@
 
 <div class="top-bar">
     <div id="user-info">
-        <span>👋 Olá, <span id="display-name"></span>!</span>
+        <span>Olá, <span id="display-name"></span>!</span>
         <button class="btn-logout" onclick="logout()">Sair</button>
     </div>
     <label class="switch">
@@ -400,49 +394,49 @@
     <p class="subtitle">Faça login para acessar o menu</p>
     
     <div class="input-group">
-        <span class="icon">👤</span>
+        <span class="icon">&#128100;</span>
         <input type="text" id="username" placeholder="Usuário" autocomplete="username">
     </div>
     
     <div class="password-wrapper">
         <div class="input-group" style="flex:1; margin-bottom:0;">
-            <span class="icon">🔒</span>
+            <span class="icon">&#128274;</span>
             <input type="password" id="password" placeholder="Senha" autocomplete="current-password">
         </div>
-        <button type="button" class="btn-toggle-pass" onclick="togglePassword()">👁️</button>
+        <button type="button" class="btn-toggle-pass" onclick="togglePassword()">&#128065;</button>
     </div>
     
     <button class="btn-login" onclick="verificarLogin()">Entrar</button>
-    <p id="error-msg" style="display: none;">
-        <span>⚠️</span> Usuário ou senha incorretos!
+    <p id="error-msg">
+        <span>&#9888;</span> Usuário ou senha incorretos!
     </p>
 </div>
 
 <div id="menu-botoes">
     <button class="btn-menu btn-red" onclick="irPara('x')">
-        <span class="emoji">🔴</span>
+        <span class="emoji">&#128308;</span>
         <span class="label">X Vidros</span>
-        <span class="arrow">→</span>
+        <span class="arrow">&#8594;</span>
     </button>
     <button class="btn-menu btn-yellow" onclick="irPara('pobri')">
-        <span class="emoji">🟡</span>
+        <span class="emoji">&#128993;</span>
         <span class="label">PobriHub</span>
-        <span class="arrow">→</span>
+        <span class="arrow">&#8594;</span>
     </button>
     <button class="btn-menu btn-pink" onclick="irPara('hantai')">
-        <span class="emoji">🩷</span>
+        <span class="emoji">&#128150;</span>
         <span class="label">Hantai</span>
-        <span class="arrow">→</span>
+        <span class="arrow">&#8594;</span>
     </button>
     <button class="btn-menu btn-blue" id="btn-gay" style="display: none;" onclick="irPara('pobrigay')">
-        <span class="emoji">🔵</span>
+        <span class="emoji">&#128309;</span>
         <span class="label">PobriGay</span>
-        <span class="arrow">→</span>
+        <span class="arrow">&#8594;</span>
     </button>
     <button class="btn-menu btn-purple" onclick="irPara('erome')">
-        <span class="emoji">🟣</span>
+        <span class="emoji">&#128995;</span>
         <span class="label">Erome</span>
-        <span class="arrow">→</span>
+        <span class="arrow">&#8594;</span>
     </button>
 </div>
 
@@ -454,7 +448,6 @@
         localStorage.setItem('theme', document.body.classList.contains('dark-mode') ? 'dark' : 'light');
     }
 
-    // Restaurar tema salvo
     if (localStorage.getItem('theme') === 'dark') {
         document.body.classList.add('dark-mode');
         document.querySelector('.switch input').checked = true;
@@ -465,10 +458,10 @@
         const btn = event.target;
         if (pass.type === "password") {
             pass.type = "text";
-            btn.textContent = "🙈";
+            btn.innerHTML = "&#128584;";
         } else {
             pass.type = "password";
-            btn.textContent = "👁️";
+            btn.innerHTML = "&#128065;";
         }
     }
 
@@ -480,7 +473,6 @@
         if (usuariosPermitidos.includes(user) && pass === (user + "69")) {
             usuarioLogado = user;
             
-            // Animação de saída do login
             const loginBox = document.getElementById("login-container");
             loginBox.style.animation = "fadeOut 0.3s ease-in forwards";
             
@@ -497,14 +489,12 @@
         } else {
             const errorMsg = document.getElementById("error-msg");
             errorMsg.style.display = "flex";
-            // Reinicia animação
-            errorMsg.style.animation = 'none';
-            errorMsg.offsetHeight;
-            errorMsg.style.animation = 'shake 0.5s ease-in-out';
+            errorMsg.classList.remove("shake");
+            void errorMsg.offsetWidth;
+            errorMsg.classList.add("shake");
         }
     }
 
-    // Enter para logar
     document.getElementById('password').addEventListener('keypress', function(e) {
         if (e.key === 'Enter') verificarLogin();
     });
@@ -524,13 +514,6 @@
         window.open(urls[servico], '_blank');
     }
 </script>
-
-<style>
-    @keyframes fadeOut {
-        from { opacity: 1; transform: translateY(0); }
-        to { opacity: 0; transform: translateY(-20px); }
-    }
-</style>
 
 </body>
 </html>
