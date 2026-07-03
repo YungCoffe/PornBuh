@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menu de Acesso</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #0f0f23;
+            --bg-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --container-bg: rgba(255, 255, 255, 0.95);
+            --text-color: #1a1a2e;
+            --input-bg: #f8f9fa;
+            --input-border: #e0e0e0;
+            --primary: #667eea;
+            --primary-hover: #5a67d8;
+            --shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            --glass: rgba(255, 255, 255, 0.1);
+        }
+
+        .dark-mode {
+            --bg-color: #0a0a0a;
+            --container-bg: rgba(30, 30, 40, 0.95);
+            --text-color: #e0e0e0;
+            --input-bg: #2a2a3a;
+            --input-border: #3a3a4a;
+            --primary: #8b5cf6;
+            --primary-hover: #7c3aed;
+            --shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            --glass: rgba(255, 255, 255, 0.05);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background: var(--bg-gradient);
+            color: var(--text-color);
+            transition: all 0.5s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Partículas de fundo animadas */
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-image: 
+                radial-gradient(circle at 20% 80%, rgba(255,255,255,0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255,255,255,0.1) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        .top-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+            background: var(--glass);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        #user-info {
+            display: none;
+            align-items: center;
+            gap: 12px;
+            font-weight: 600;
+            font-size: 14px;
+            color: white;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .btn-logout {
+            background: rgba(220, 53, 69, 0.9);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .btn-logout:hover {
+            background: #dc3545;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(220, 53, 69, 0.4);
+        }
+
+        /* Toggle Switch Premium */
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 56px;
+            height: 30px;
+        }
+
+        .switch input { opacity: 0; width: 0; height: 0; }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(255,255,255,0.2);
+            transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 30px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .slider::before {
+            position: absolute;
+            content: "☀️";
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            height: 24px;
+            width: 24px;
+            left: 3px;
+            bottom: 3px;
+            background: white;
+            transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 50%;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        }
+
+        input:checked + .slider { background: rgba(139, 92, 246, 0.5); }
+        input:checked + .slider::before {
+            transform: translateX(26px);
+            content: "🌙";
+        }
+
+        /* Container de Login */
+        .login-box {
+            background: var(--container-bg);
+            padding: 48px;
+            border-radius: 24px;
+            box-shadow: var(--shadow);
+            width: 420px;
+            max-width: 90%;
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,255,255,0.2);
+            animation: slideUp 0.6s ease-out;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .login-box h2 {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            background: linear-gradient(135deg, var(--primary), #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .login-box .subtitle {
+            font-size: 14px;
+            color: #888;
+            margin-bottom: 32px;
+            font-weight: 400;
+        }
+
+        .input-group {
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 16px 16px 16px 48px;
+            border: 2px solid var(--input-border);
+            border-radius: 12px;
+            background: var(--input-bg);
+            color: var(--text-color);
+            font-size: 15px;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.3s ease;
+            outline: none;
+        }
+
+        .input-group input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+        }
+
+        .input-group .icon {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 18px;
+            opacity: 0.5;
+        }
+
+        .password-wrapper {
+            display: flex;
+            gap: 8px;
+        }
+
+        .password-wrapper .input-group { flex: 1; }
+
+        .btn-toggle-pass {
+            width: 50px;
+            height: 54px;
+            border: 2px solid var(--input-border);
+            border-radius: 12px;
+            background: var(--input-bg);
+            cursor: pointer;
+            font-size: 18px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-toggle-pass:hover {
+            border-color: var(--primary);
+            background: rgba(102, 126, 234, 0.1);
+        }
+
+        .btn-login {
+            width: 100%;
+            padding: 16px;
+            cursor: pointer;
+            background: linear-gradient(135deg, var(--primary), #764ba2);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.3s ease;
+            margin-top: 8px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-login::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn-login:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-login:hover::before { left: 100%; }
+
+        .btn-login:active { transform: translateY(0); }
+
+        #error-msg {
+            color: #e74c3c;
+            font-size: 13px;
+            margin-top: 16px;
+            text-align: center;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            animation: shake 0.5s ease-in-out;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        /* Menu de Botões */
+        #menu-botoes {
+            display: none;
+            flex-direction: column;
+            gap: 16px;
+            width: 380px;
+            max-width: 90%;
+            margin-top: 20px;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .btn-menu {
+            padding: 20px 28px;
+            border: none;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            border-radius: 16px;
+            font-size: 16px;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            text-align: left;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .btn-menu::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(135deg, rgba(255,255,255,0.2), transparent);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .btn-menu:hover {
+            transform: translateY(-4px) scale(1.02);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.3);
+        }
+
+        .btn-menu:hover::before { opacity: 1; }
+
+        .btn-menu:active { transform: translateY(-2px) scale(1.01); }
+
+        .btn-menu .emoji {
+            font-size: 24px;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+        }
+
+        .btn-menu .label {
+            flex: 1;
+        }
+
+        .btn-menu .arrow {
+            opacity: 0;
+            transform: translateX(-10px);
+            transition: all 0.3s ease;
+            font-size: 18px;
+        }
+
+        .btn-menu:hover .arrow {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        /* Cores específicas dos botões com gradientes */
+        .btn-red { background: linear-gradient(135deg, #ff416c, #ff4b2b); }
+        .btn-yellow { background: linear-gradient(135deg, #f6d365, #fda085); color: #1a1a2e; }
+        .btn-pink { background: linear-gradient(135deg, #ff6b9d, #c44569); }
+        .btn-blue { background: linear-gradient(135deg, #4facfe, #00f2fe); }
+        .btn-purple { background: linear-gradient(135deg, #a18cd1, #fbc2eb); }
+
+        /* Responsivo */
+        @media (max-width: 480px) {
+            .login-box { padding: 32px 24px; }
+            .top-bar { padding: 16px 20px; }
+            #menu-botoes { width: 90%; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="top-bar">
+    <div id="user-info">
+        <span>👋 Olá, <span id="display-name"></span>!</span>
+        <button class="btn-logout" onclick="logout()">Sair</button>
+    </div>
+    <label class="switch">
+        <input type="checkbox" onclick="toggleTheme()">
+        <span class="slider"></span>
+    </label>
+</div>
+
+<div id="login-container" class="login-box">
+    <h2>Bem-vindo</h2>
+    <p class="subtitle">Faça login para acessar o menu</p>
+    
+    <div class="input-group">
+        <span class="icon">👤</span>
+        <input type="text" id="username" placeholder="Usuário" autocomplete="username">
+    </div>
+    
+    <div class="password-wrapper">
+        <div class="input-group" style="flex:1; margin-bottom:0;">
+            <span class="icon">🔒</span>
+            <input type="password" id="password" placeholder="Senha" autocomplete="current-password">
+        </div>
+        <button type="button" class="btn-toggle-pass" onclick="togglePassword()">👁️</button>
+    </div>
+    
+    <button class="btn-login" onclick="verificarLogin()">Entrar</button>
+    <p id="error-msg" style="display: none;">
+        <span>⚠️</span> Usuário ou senha incorretos!
+    </p>
+</div>
+
+<div id="menu-botoes">
+    <button class="btn-menu btn-red" onclick="irPara('x')">
+        <span class="emoji">🔴</span>
+        <span class="label">X Vidros</span>
+        <span class="arrow">→</span>
+    </button>
+    <button class="btn-menu btn-yellow" onclick="irPara('pobri')">
+        <span class="emoji">🟡</span>
+        <span class="label">PobriHub</span>
+        <span class="arrow">→</span>
+    </button>
+    <button class="btn-menu btn-pink" onclick="irPara('hantai')">
+        <span class="emoji">🩷</span>
+        <span class="label">Hantai</span>
+        <span class="arrow">→</span>
+    </button>
+    <button class="btn-menu btn-blue" id="btn-gay" style="display: none;" onclick="irPara('pobrigay')">
+        <span class="emoji">🔵</span>
+        <span class="label">PobriGay</span>
+        <span class="arrow">→</span>
+    </button>
+    <button class="btn-menu btn-purple" onclick="irPara('erome')">
+        <span class="emoji">🟣</span>
+        <span class="label">Erome</span>
+        <span class="arrow">→</span>
+    </button>
+</div>
+
+<script>
+    let usuarioLogado = "";
+
+    function toggleTheme() {
+        document.body.classList.toggle("dark-mode");
+        localStorage.setItem('theme', document.body.classList.contains('dark-mode') ? 'dark' : 'light');
+    }
+
+    // Restaurar tema salvo
+    if (localStorage.getItem('theme') === 'dark') {
+        document.body.classList.add('dark-mode');
+        document.querySelector('.switch input').checked = true;
+    }
+
+    function togglePassword() {
+        const pass = document.getElementById("password");
+        const btn = event.target;
+        if (pass.type === "password") {
+            pass.type = "text";
+            btn.textContent = "🙈";
+        } else {
+            pass.type = "password";
+            btn.textContent = "👁️";
+        }
+    }
+
+    function verificarLogin() {
+        const user = document.getElementById("username").value.toLowerCase().trim();
+        const pass = document.getElementById("password").value;
+        const usuariosPermitidos = ["isaque", "allan", "gustavo", "joao"];
+        
+        if (usuariosPermitidos.includes(user) && pass === (user + "69")) {
+            usuarioLogado = user;
+            
+            // Animação de saída do login
+            const loginBox = document.getElementById("login-container");
+            loginBox.style.animation = "fadeOut 0.3s ease-in forwards";
+            
+            setTimeout(() => {
+                loginBox.style.display = "none";
+                document.getElementById("menu-botoes").style.display = "flex";
+                document.getElementById("user-info").style.display = "flex";
+                document.getElementById("display-name").innerText = user.charAt(0).toUpperCase() + user.slice(1);
+                
+                if (user === "isaque") {
+                    document.getElementById("btn-gay").style.display = "flex";
+                }
+            }, 300);
+        } else {
+            const errorMsg = document.getElementById("error-msg");
+            errorMsg.style.display = "flex";
+            // Reinicia animação
+            errorMsg.style.animation = 'none';
+            errorMsg.offsetHeight;
+            errorMsg.style.animation = 'shake 0.5s ease-in-out';
+        }
+    }
+
+    // Enter para logar
+    document.getElementById('password').addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') verificarLogin();
+    });
+
+    function logout() { 
+        location.reload(); 
+    }
+
+    function irPara(servico) {
+        const urls = {
+            "x": "https://www.google.com/amp/s/amp.xvideos.com/home/br",
+            "pobri": "https://pt.pornhub.com/video/search?search=porhub",
+            "hantai": "https://animeshentai.biz/generos/",
+            "pobrigay": "https://meumundogay.net/tag/isaque-monteiro/",
+            "erome": "https://es.erome.com/search?q=videos+novos"
+        };
+        window.open(urls[servico], '_blank');
+    }
+</script>
+
+<style>
+    @keyframes fadeOut {
+        from { opacity: 1; transform: translateY(0); }
+        to { opacity: 0; transform: translateY(-20px); }
+    }
+</style>
+
+</body>
+</html>
